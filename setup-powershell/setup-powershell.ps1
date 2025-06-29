@@ -8,5 +8,5 @@ Write-Host "Latest Version: $latestVersion"
 if ($currentVersion -ne $latestVersion) {
     winget install --id Microsoft.Powershell --source winget
     Write-Host "Please restart shell."
-    return 1
+    exit 1
 }
