@@ -50,40 +50,10 @@ if ($Backup) {
 try {
     # Load settings file
     $settings = Get-Content $settingsPath -Raw | ConvertFrom-Json
-    
+
     # Search for or create PowerShell 7 profile
     $pwsh7Profile = $null
     $pwsh7Guid = "{574e775e-4f2a-5b96-ac1e-a2962a402336}"  # Standard GUID for PowerShell 7
-    
-    # Search for PowerShell 7 in existing profiles
-    foreach ($profile in $settings.profiles.list) {
-        if ($profile.commandline -like "*pwsh.exe*" -or $profile.source -eq "Windows.Terminal.PowershellCore") {
-            $pwsh7Profile = $profile
-            $pwsh7Guid = $profile.guid
-            break
-        }
-    }
-    
-    # Create PowerShell 7 profile if it doesn't exist
-    if (-not $pwsh7Profile) {
-        Write-Host "Creating PowerShell 7 profile..." -ForegroundColor Yellow
-        
-        $newProfile = @{
-            guid = $pwsh7Guid
-            name = "PowerShell 7"
-            commandline = $pwsh7Path
-            icon = "ms-appx:///ProfileIcons/pwsh.png"
-            startingDirectory = "%USERPROFILE%"
-            hidden = $false
-        }
-        
-        $settings.profiles.list += $newProfile
-        Write-Host "PowerShell 7 profile added" -ForegroundColor Green
-    } else {
-        Write-Host "Using existing PowerShell 7 profile: $($pwsh7Profile.name)" -ForegroundColor Green
-        # Update command line path
-        $pwsh7Profile.commandline = $pwsh7Path
-    }
     
     # Set default profile
     $currentDefault = $settings.defaultProfile
